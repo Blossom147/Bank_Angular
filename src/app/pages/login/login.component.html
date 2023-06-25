@@ -1,0 +1,63 @@
+<div class="login-page-container">
+  <div class="login-container">
+    <h1 class="login-header">Welcome Back!</h1>
+    <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Phần nhập tài khoản -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
+            <input type="text" nz-input formControlName="username" placeholder="Tài khoản" />
+          </nz-input-group>
+          <ng-template #prefixTemplateUser><span nz-icon nzType="user"></span></ng-template>
+          <ng-template #suffixTemplateInfo>
+            <span nz-icon nz-tooltip nzTooltipTitle="Extra information" nzType="info-circle"></span>
+          </ng-template>
+          <nz-form-explain *ngIf="loginForm.get('username')?.invalid && (loginForm.get('username')?.dirty || loginForm.get('username')?.touched)">
+            <span *ngIf="loginForm.get('username')?.errors?.['required']">Tài khoản là bắt buộc</span>
+            <span *ngIf="loginForm.get('username')?.errors?.['minlength']">Tài khoản phải có ít nhất 6 ký tự</span>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Phần nhập mật khẩu -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzSuffix]="suffixTemplate">
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              nz-input
+              formControlName="password"
+              placeholder="Mật khẩu"
+            />
+          </nz-input-group>
+          <ng-template #suffixTemplate>
+            <span
+              nz-icon
+              [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+              (click)="passwordVisible = !passwordVisible"
+            ></span>
+          </ng-template>
+          <nz-form-explain *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Mật khẩu là bắt buộc</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Mật khẩu phải có ít nhất 8 ký tự</span>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Nút đăng nhập -->
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" nzBlock [disabled]="loginForm.invalid">Đăng nhập</button>
+          <div *ngIf="loginError" class="error-message">Tài khoản hoặc mật khẩu không chính xác</div>
+
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Phần đăng kí -->
+      <div class="register-link">
+        Nếu chưa có tài khoản, <a routerLink="/register">đăng kí ngay</a>.
+      </div>
+    </form>
+  </div>
+</div>

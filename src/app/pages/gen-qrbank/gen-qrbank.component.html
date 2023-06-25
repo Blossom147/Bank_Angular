@@ -1,0 +1,90 @@
+
+        <script>
+            function validateCardNumber(input) {
+              const value = input.value;
+              const errorElement = document.getElementById("errorCustomerId");
+
+              if (!/^[0-9]+$/.test(value)) {
+                errorElement.style.display = "block";
+              } else {
+                errorElement.style.display = "none";
+              }
+            }
+        </script>
+
+
+<div class="input-container">
+  <h2 class="title">Tạo mã QR</h2>
+
+  <div class="grid-container">
+    <div class="grid-item">
+      <nz-form [formGroup]="qrForm" (ngSubmit)="generateQRCode()">
+
+        <!-- Mã dịch vụ -->
+        <div class="form-group">
+          <label for="serviceCode">Mã dịch vụ</label>
+          <select class="form-control" formControlName="serviceCode" id="serviceCode">
+            <option value="QRIBFTTA">Dịch vụ chuyển tiền nhanh 24/7 (QRIBFTTA)</option>
+            <option value="QRPUSH">Dịch vụ thanh toán bằng QR (QRPUSH)</option>
+          </select>
+        </div>
+
+        <!-- Tên chủ thẻ -->
+        <div class="form-group">
+          <label for="customerName">Tên chủ thẻ</label>
+          <input nz-input formControlName="customerName" id="customerName" placeholder="Nhập tên chủ thẻ" (input)="handleInput($event)">
+        </div>
+
+
+        <!-- Mã số thẻ -->
+      <div class="form-group">
+        <label for="customerId">Mã số thẻ</label>
+        <input nz-input formControlName="customerId" id="customerId" placeholder="Nhập mã số thẻ" type="text" pattern="[0-9]+" (blur)="validateCardNumber($event)">
+        <div id="errorCustomerId" style="color: red; display: none;">Vui lòng chỉ nhập số</div>
+      </div>
+
+          <!-- Số tiền -->
+        <div class="form-group">
+          <label for="transAmount">Số tiền</label>
+          <div class="input-group">
+            <input class="form-control" formControlName="transAmount" id="transAmount" type="text" placeholder="Nhập số tiền" (input)="formatAmount($event)" />
+            <span class="input-currency"></span>
+          </div>
+        </div>
+
+
+
+        <!-- Tên ngân hàng -->
+        <div class="form-group">
+          <label for="bankName">Tên ngân hàng</label>
+          <select class="form-control" formControlName="bankName" id="bankName" [(ngModel)]="selectedBankName">
+            <option *ngFor="let bank of bankList" [value]="bank.shortName">{{ bank.shortName }}</option>
+          </select>
+        </div>
+
+        <!-- Thông tin thêm -->
+        <div class="form-group">
+          <label for="additionInfo">Thông tin thêm</label>
+          <textarea class="form-control" formControlName="additionInfo" id="additionInfo" placeholder="Nhập thông tin thêm"></textarea>
+        </div>
+
+        <!-- Nút tạo mã -->
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" class="create-button" (click)="generateQRCode()">Tạo mã</button>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-form>
+    </div>
+
+    <div class="grid-item">
+      <!-- Hiển thị mã QR tại đây -->
+      <div class="qr-display">
+        <img [src]="qrCodeData" alt="QR Code">
+      </div>
+      <nz-form-control>
+        <button nz-button nzType="primary" class="download-button" (click)="downloadImg()">Tải xuống</button>
+      </nz-form-control>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+.card-wrapper {
+  display: flex; /* Sử dụng flexbox */
+}
+
+.content-wrapper {
+  flex: 1; /* Chia sẻ không gian ngang đều nhau */
+  margin: 0 8px; /* Khoảng cách giữa 2 phần */
+}
+.create-button {
+  width: 100%;
+}
+
+.qr-card {
+  text-align: center; /* Căn lề phải */
+}
+
+.qr-url {
+  display: block;
+  padding: 16px;
+}
+
+.qr-card {
+  position: relative;
+}
+
+.download-wrapper {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+}

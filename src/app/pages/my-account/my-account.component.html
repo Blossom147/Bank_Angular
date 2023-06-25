@@ -1,0 +1,95 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <h1>Thông tin tài khoản</h1>
+  <br>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">Tài khoản</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzValidatingTip="Validating...">
+      <input nz-input formControlName="username" [readonly]="true" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" >Họ</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input formControlName="firstName" placeholder="First Name" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" >Tên</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input formControlName="lastName" placeholder="Last Name" />
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <!-- Trường "phone" -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">Số điện thoại</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input formControlName="phone" placeholder="Phone" />
+      <div *ngIf="validateForm.get('phone')?.errors && (validateForm.get('phone')?.dirty || validateForm.get('phone')?.touched)">
+        <div *ngIf="validateForm.get('phone')?.hasError('required')">Please enter your phone number!</div>
+        <div *ngIf="validateForm.get('phone')?.hasError('pattern')">Please enter a valid phone number!</div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <!-- Trường "company" -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" >Tổ chức</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input formControlName="company" placeholder="Company" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Trường "adress" -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" >Địa chỉ</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input formControlName="address" placeholder="Address" />
+    </nz-form-control>
+  </nz-form-item>
+
+    <!-- Trường "email" -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">Địa chỉ E-mail</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="email" placeholder="Email" type="email" />
+        <div *ngIf="validateForm.get('email')?.errors && (validateForm.get('email')?.dirty || validateForm.get('email')?.touched)">
+          <div *ngIf="validateForm.get('email')?.hasError('required')">Please enter your email!</div>
+          <div *ngIf="validateForm.get('email')?.hasError('email')">Please enter a valid email!</div>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+
+
+  <!-- Hai trường "password" -->
+  <!-- <nz-form-item>
+    <nz-form-label [nzSpan]="7">Mật khẩu</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input type="password" formControlName="password" placeholder="Password" />
+      <div *ngIf="validateForm.get('password')?.errors && (validateForm.get('password')?.dirty || validateForm.get('password')?.touched)">
+        <div *ngIf="validateForm.get('password')?.hasError('required')">Please enter your password!</div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">Nhập lại mật khẩu</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input type="password" formControlName="confirm" placeholder="Confirm Password" />
+      <div *ngIf="validateForm.get('confirm')?.errors?.['mismatch'] && (validateForm.get('confirm')?.dirty || validateForm.get('confirm')?.touched)">
+        Passwords do not match!
+      </div>
+    </nz-form-control>
+  </nz-form-item> -->
+
+
+  <nz-form-item>
+    <nz-form-control [nzOffset]="7" [nzSpan]="12">
+      <button nz-button nzType="primary" type="submit">Cập nhật thông tin</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

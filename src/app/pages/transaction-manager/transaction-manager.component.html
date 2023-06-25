@@ -1,0 +1,150 @@
+
+<!-- TÌm kiếm -->
+<div class="search-container">
+  <h2>Tìm kiếm</h2>
+  <div class="search-row">
+    <div class="search-field">
+      <label>Loại bản tin:</label>
+      <nz-select [(ngModel)]="searchType" name="searchType">
+        <nz-option nzValue="All" nzLabel="All"></nz-option>
+        <nz-option nzValue="Lookup" nzLabel="Lookup"></nz-option>
+        <nz-option nzValue="Payment" nzLabel="Payment"></nz-option>
+      </nz-select>
+    </div>
+    <div class="search-field">
+      <label>Từ ngày:</label>
+      <input type="date" [(ngModel)]="searchFromDay" name="searchFromDay" [value]="defaultFromDate" />
+    </div>
+    <div class="search-field">
+      <label>Đến ngày:</label>
+      <input type="date" [(ngModel)]="searchToDay" name="searchToDay" [value]="defaultToDate" />
+    </div>
+    <div class="search-field">
+      <label>Trạng thái GD:</label>
+      <nz-select [(ngModel)]="searchStatus" name="searchStatus">
+        <nz-option nzValue="All" nzLabel="All"></nz-option>
+        <nz-option nzValue="Success" nzLabel="Success"></nz-option>
+        <nz-option nzValue="Sent Error" nzLabel="Sent Error"></nz-option>
+      </nz-select>
+    </div>
+    <div class="search-button">
+      <button nz-button nzType="primary" (click)="searchTransactions()">Tìm kiếm</button>
+    </div>
+
+    <div class="refresh-button">
+    <span nz-icon nzType="reload" nzTheme="outline" (click)="reLoad()"></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- Thông tin quản lý giao dịch -->
+<br>
+<h2>Thông tin</h2>
+<br>
+<!-- Số lượng giao dịch -->
+<h3>Tổng số bản ghi: {{ countTrans }} </h3>
+<br>
+<!-- Danh sách giao dịch -->
+<nz-table
+  [nzData]="transList"
+  [nzFrontPagination]="true"
+  [nzTotal]="totalTrans"
+  [nzLoading]="loading"
+  [nzPageSize]="pageSize"
+  (nzPageIndexChange)="onPageChange($event)"
+  (nzPageSizeChange)="onPageChange($event)"
+  [nzExpand]="expandTemplate"
+>
+  <!-- Các cột dữ liệu -->
+  <thead>
+    <tr>
+      <th>IDX</th>
+      <th>Số GD</th>
+      <th>In/Out</th>
+      <th>Loại bản tin</th>
+      <th>Từ ngân hàng</th>
+      <th>Tên tổ chức</th>
+      <th>Loại dịch vụ</th>
+      <th>Quê quán</th>
+      <th>Số thẻ/TK</th>
+      <th>Số tiền</th>
+      <th>Loại tiền</th>
+      <th>Mã hóa đơn</th>
+      <th>Thời gian tạo</th>
+      <th>Trạng thái GD</th>
+      <th>Thao tác</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let trans of transList.slice((currentPage - 1) * pageSize, currentPage * pageSize)">
+      <tr>
+        <td>{{ trans.transactionId }}</td>
+        <td>{{ trans.refferenceNo }}</td>
+        <td>{{ trans.direction }}</td>
+        <td>{{ trans.type }}</td>
+        <td>{{ trans.senderBank }}</td>
+        <td>{{ trans.organizationName }}</td>
+        <td>Điện/nước</td>
+        <td>VietNam</td>
+        <td>{{ trans.creditAcct }}</td>
+        <td>{{ trans.transAmount | number: '1.0-0' }}</td>
+        <td>{{ trans.transCcy }}</td>
+        <td>{{ trans.billNumber }}</td>
+        <td>{{ trans.receivedDt | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ trans.errorCode }}</td>
+        <td>
+          <button nz-button nzType="primary" (click)="queryTransaction(trans)">Truy vấn</button>
+        </td>
+      </tr>
+      <tr *ngIf="trans.expand">
+        <td colspan="15" class="nested-table">
+          <nz-table [nzData]="trans.children "
+          [nzFrontPagination]="false">
+            <thead>
+              <tr>
+                <th>IDX</th>
+                <th>Số GD</th>
+                <th>Req/Res</th>
+                <th>Nguồn - Đích</th>
+                <th>Trạng thái gửi</th>
+                <th>Diễn giải</th>
+                <th>Trạng thái GD</th>
+                <th>Diễn giải</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let child of trans.children">
+                <td>{{ child.id }}</td>
+                <td>{{ child.transaction.id }}</td>
+                <td>{{ child.reqResgb }}</td>
+                <td>{{ child.activityStep }}</td>
+                <td>{{ child.activityStepStatus }}</td>
+                <td>{{ child.errorDesc }}</td>
+                <td>{{ child.activityStepStatus }}</td>
+                <td>{{ child.errorDesc }}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showMsgContent(child)">Xem</button>
+                </td>
+              </tr>
+            </tbody>
+
+          </nz-table>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</nz-table>
+<div *ngIf="showMsg" class="overlay">
+  <div class="form-container">
+    <form>
+        <textarea [(ngModel)]="formattedMsgContent" name="msgContent" readonly></textarea>
+      <button class="close-button" nz-button nzShape="circle" nzType="text" (click)="closeForm()">
+        <span nz-icon nzType="close" nzTheme="outline"></span>
+      </button>
+    </form>
+  </div>
+</div>
+
+

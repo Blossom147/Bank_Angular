@@ -1,0 +1,150 @@
+/* .input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+} */
+
+.title {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.grid-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.grid-item {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f5f5;
+  margin-right: 10px;
+}
+
+.grid-item:last-child {
+  margin-right: 0;
+}
+
+.qr-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.qr-display img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.create-button {
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .grid-container {
+    flex-direction: column;
+  }
+  .grid-item {
+    margin-top: 20px;
+    margin-right: 0;
+  }
+}
+
+.create-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.create-button span {
+  margin-right: 5px; /* Khoảng cách giữa chữ và biểu tượng (nếu có) */
+}
+
+/* CSS cho các phần tử nhập liệu */
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+.create-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+
+.download-button {
+  width: 100%;
+  padding: 10px;
+  top: 30px;
+  font-size: 16px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.create-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.qr-display {
+  /* Đảm bảo phần tử .qr-display có thuộc tính position để hoạt động với thuộc tính position của .download-wrapper */
+  position: relative;
+
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.download-wrapper {
+  /* Căn chỉnh phần tử .download-wrapper ở giữa và dưới phần tử .qr-display */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
+}
+.qr-display img {
+  /* Cài đặt các thuộc tính khác cho hình ảnh */
+
+  /* Đảm bảo hình ảnh không vượt quá kích thước của qr-display */
+  max-width: 70%;
+  max-height: 70%;
+}

@@ -1,0 +1,22 @@
+<div class="card-wrapper">
+  <nz-card class="content-wrapper">
+    <div class="content">
+      <h2 class="title">Tạo mã QR</h2>
+      <nz-input-group [nzAddOnBefore]="'Nội dung:'">
+        <input nz-input [(ngModel)]="content" placeholder="Nhập nội dung">
+      </nz-input-group>
+      <p class="error-message" *ngIf="isError">Nội dung bạn nhập chưa chính xác</p>
+    </div>
+    <p></p>
+    <div class="button-wrapper">
+      <button nz-button nzType="primary" class="create-button" (click)="generateQRCode()">Tạo mã</button>
+    </div>
+  </nz-card>
+  <nz-card class="content-wrapper qr-card">
+    <img [src]="qrCodeData" alt="QR Code">
+    <div class="download-wrapper">
+      <a #download hidden></a>
+      <button nz-button nzType="primary" (click)="downloadImg()">Tải xuống</button>
+    </div>
+  </nz-card>
+</div>

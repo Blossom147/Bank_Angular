@@ -1,0 +1,102 @@
+<h2>Danh sách tài khoản</h2>
+
+<nz-table
+  [nzData]="userList"
+  [nzFrontPagination]="true"
+  [nzTotal]="totalUsers"
+  [nzLoading]="loading"
+  [nzPageSize]="pageSize"
+  (nzPageIndexChange)="onPageChange($event)"
+  (nzPageSizeChange)="onPageChange($event)"
+>
+  <!-- Các cột dữ liệu -->
+  <thead>
+    <tr>
+      <th>Tài khoản</th>
+      <th>Địa chỉ gmail</th>
+      <th>Khả dụng</th>
+      <th>Thời gian tạo</th>
+      <th>Roles</th>
+      <th>Chức năng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of userList.slice((currentPage - 1) * pageSize, currentPage * pageSize)">
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.enabled ? 'Yes' : 'No' }}</td>
+      <td>{{ user.createOn | date: 'dd-MM-yyyy' }}</td>
+      <td>{{ user.roles }}</td>
+      <td>
+        <button nz-button nzType="primary" (click)="editUser(user)">Sửa</button>
+        <button nz-button nzType="default" (click)="showDeleteConfirm(user)">Xóa</button>
+      </td>
+    </tr>
+  </tbody>
+
+</nz-table>
+
+<!-- Form chỉnh sửa -->
+<div class="edit-form-overlay" *ngIf="showEditForm">
+  <div class="edit-form-container">
+    <button class="edit-form-close" nz-button nzShape="circle" nzSize="small" nzType="text" (click)="cancelEdit()">
+      <span nz-icon nzType="close" nzTheme="outline"></span>
+    </button>
+    <form nz-form [formGroup]="editForm">
+      <nz-form-item>
+        <nz-form-label>Tài khoản</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="username" [readonly]="!editMode" />
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <!-- <nz-form-item>
+        <nz-form-label >Mật khẩu</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="password" />
+        </nz-form-control>
+      </nz-form-item> -->
+
+      <nz-form-item>
+        <nz-form-label>Email</nz-form-label>
+        <nz-form-control [nzErrorTip]="getErrorMessage('email')" nzValidateStatus="email">
+          <input nz-input formControlName="email" />
+        </nz-form-control>
+      </nz-form-item>
+
+
+
+      <nz-form-item>
+        <nz-form-label>Role</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="roles">
+            <nz-option nzLabel="USER" nzValue="USER"></nz-option>
+            <nz-option nzLabel="ADMIN" nzValue="ADMIN"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Số điện thoại</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="phone" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Khả dụng</nz-form-label>
+        <nz-form-control>
+          <nz-switch formControlName="enabled"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Thêm các trường khác tương tự -->
+      <div class="edit-form-buttons">
+        <button nz-button nzType="primary" (click)="updateUser()">Lưu</button>
+        <button nz-button (click)="cancelEdit()">Hủy</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

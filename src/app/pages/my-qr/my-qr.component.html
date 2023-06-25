@@ -1,0 +1,116 @@
+
+<!-- Tìm kiếm -->
+<div class="search-container">
+  <h2>Tìm kiếm</h2>
+  <div class="search-row">
+    <div class="search-field">
+      <label>Loại mã QR:</label>
+      <nz-select [(ngModel)]="searchType" name="searchType">
+        <nz-option nzValue="All" nzLabel="All"></nz-option>
+        <nz-option nzValue="Text" nzLabel="Text"></nz-option>
+        <nz-option nzValue="URL" nzLabel="URL"></nz-option>
+      </nz-select>
+    </div>
+    <div class="search-field">
+      <label>Từ ngày:</label>
+      <input type="date" [(ngModel)]="searchFromDay" name="searchFromDay" [value]="defaultFromDate" />
+    </div>
+    <div class="search-field">
+      <label>Đến ngày:</label>
+      <input type="date" [(ngModel)]="searchToDay" name="searchToDay" [value]="defaultToDate" />
+    </div>
+    <div class="search-button">
+      <button nz-button nzType="primary" (click)="searchQR()">Tìm kiếm</button>
+    </div>
+
+    <div class="refresh-button">
+    <span nz-icon nzType="reload" nzTheme="outline" (click)="reLoad()"></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- Thông tin quản lý giao dịch -->
+<br>
+<h2>Thông tin</h2>
+<br>
+<!-- Số lượng mã QR -->
+<h3>Tổng số mã QR: {{ qrCount }} </h3>
+<br>
+<!-- Danh sách giao dịch -->
+
+<nz-table
+  [nzData]="QRList"
+  [nzFrontPagination]="true"
+  [nzTotal]="totalQR"
+  [nzLoading]="loading"
+  [nzPageSize]="pageSize"
+  (nzPageIndexChange)="onPageChange($event)"
+  (nzPageSizeChange)="onPageChange($event)"
+>
+  <!-- Các cột dữ liệu -->
+  <thead>
+    <tr>
+      <th style="width: 10%;">Số thứ tự</th>
+      <th style="width: 10%;">Loại</th>
+      <th style="width: 25%;">Nội dung</th>
+      <th style="width: 10%;">Ngày tạo</th>
+      <th style="width: 10%;">Ngày cập nhật</th>
+      <th style="width: 20%;">Hình ảnh</th>
+      <th style="width: 20%;">Chức năng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let QR of getDisplayedQRList();">
+      <!-- <td>{{ QR.id }}</td> -->
+      <td>{{ QR.serialNumber }}</td>
+      <td>{{ QR.qrType }}</td>
+      <td>{{ QR.text }}</td>
+      <td>{{ QR.trnDt }}</td>
+      <td>{{ QR.updateOn | date: 'dd-MM-yyyy' }}</td>
+      <td><img src="{{ QR.qrImage }}" /></td>
+      <td>
+        <button nz-button nzType="primary" (click)="editQR(QR)">Sửa</button>
+        <button nz-button nzType="default" (click)="showDeleteConfirm(QR)">Xóa</button>
+      </td>
+    </tr>
+  </tbody>
+
+</nz-table>
+
+
+<!-- Form chỉnh sửa -->
+<div class="edit-form-overlay" *ngIf="showEditForm">
+  <div class="edit-form-container">
+    <button class="edit-form-close" nz-button nzShape="circle" nzSize="small" nzType="text" (click)="cancelEdit()">
+      <span nz-icon nzType="close" nzTheme="outline"></span>
+    </button>
+    <form nz-form [formGroup]="editForm">
+
+
+      <nz-form-item>
+        <nz-form-label>Loại QR</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="qrType">
+            <nz-option nzLabel="URL" nzValue="URL"></nz-option>
+            <nz-option nzLabel="Text" nzValue="Text"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Nội dung</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="qrName" />
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Thêm các trường khác tương tự -->
+      <div class="edit-form-buttons">
+        <button nz-button nzType="primary" (click)="updateQR()">Lưu</button>
+        <button nz-button (click)="cancelEdit()">Hủy</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
